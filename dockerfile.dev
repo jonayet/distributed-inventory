@@ -1,0 +1,5 @@
+FROM node:14.15.2-alpine3.10
+
+WORKDIR /app
+RUN npm install --silent --progress=false
+CMD ["npm", "start"]

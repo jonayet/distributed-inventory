@@ -17,11 +17,9 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "@platform/cache/*": ["./src/platform/cache/*"],
-      "@platform/distributed-lock/*": ["./src/platform/distributed-lock/*"],
-      "@inventory/*": ["./src/inventory/*"],
-      "@platform/persistence/*": ["./src/platform/persistence/*"]
+      "@platform/*": ["./src/platform/*"],
+      "@inventory/*": ["./src/inventory/*"]
     }
   },
-  "include": ["./src/**/*"]
+  "include": ["./src/**/*", "platform"]
 }
