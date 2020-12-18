@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    /* Basic Options */
+    "target": "ES6",
+    "lib": ["ES2019", "DOM"],
+    "declaration": true,
+    "module": "CommonJS",
+    "rootDir": "src",
+    "outDir": "dist",
+    
+    /* Strict Type-Checking Options */
+    "strict": true,
+    "noImplicitAny": true,
+
+    /* Module Resolution Options */
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@platform/cache/*": ["./src/platform/cache/*"],
+      "@platform/distributed-lock/*": ["./src/platform/distributed-lock/*"],
+      "@inventory/*": ["./src/inventory/*"],
+      "@platform/persistence/*": ["./src/platform/persistence/*"]
+    }
+  },
+  "include": ["./src/**/*"]
+}
