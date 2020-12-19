@@ -1,10 +1,10 @@
 version: '3'
 services:
-  app:
+  inventory:
     build:
       context: .
       dockerfile: dockerfile.dev
-    command: npm start
+    command: npm run dev
     user: "node"
     environment:
       NODE_ENV: development
@@ -13,3 +13,5 @@ services:
     volumes:      
       - ./:/app
       - ./node_modules:/app/node_modules
+  price:
+    image: adichallenge/adichallenge:product-engine

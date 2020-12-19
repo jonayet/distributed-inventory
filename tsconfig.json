@@ -19,7 +19,9 @@
     "paths": {
       "@platform/*": ["./src/platform/*"],
       "@inventory/*": ["./src/inventory/*"]
-    }
+    },
+
+    "experimentalDecorators": true
   },
   "include": ["./src/**/*", "platform"]
 }

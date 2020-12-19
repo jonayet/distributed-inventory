@@ -1,16 +1,22 @@
-import { tryLock, releaseLock } from './lock-manager'
+import { tryLock, releaseLock, releaseAllLocks } from './lock-manager'
 
 describe('Distributed Lock specs', () => {
+  beforeEach(() => {
+    releaseAllLocks()
+  })
+  
   it('tries to acquire a lock and succeed', async () => {
-    await expect(tryLock('lock-id', 'ref-id')).resolves.toBe(true)
+    await expect(tryLock('lock-id')).resolves.toHaveLength(36)
   })
 
   it('tries to acquire a lock and fails', async () => {
-    await expect(tryLock('lock-id', 'ref-id')).resolves.toBe(false)
+    await tryLock('lock-id')
+    await expect(tryLock('lock-id')).rejects.toBe("Lock: 'lock-id' is locked already.")
   })
 
   it('releases a lock', async () => {
-    await expect(releaseLock('lock-id', 'ref-id')).resolves.toBeUndefined()
+    const refId = await tryLock('lock-id')
+    await expect(releaseLock('lock-id', refId)).resolves.toBeUndefined()
   })
 
   it('tries to release a invalid lock and fails', async () => {
@@ -18,7 +24,7 @@ describe('Distributed Lock specs', () => {
   })
 
   it('tries to release a lock with invalid ref and fails', async () => {
-    await tryLock('lock-id', 'ref-id')
+    await tryLock('lock-id')
     await expect(releaseLock('lock-id', 'invalid-ref-id')).rejects.toBe("Reference: 'invalid-ref-id' is invalid")
   })
 })
