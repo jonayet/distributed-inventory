@@ -29,6 +29,9 @@ Incorporates Caching layer, Price service and distributed lock to get/set the pr
 * **Inventory repository**  
 Incorporates Caching layer, Persistence layer and distributed lock to get/set the inventory  
 
+* **Pending orders repository**  
+Incorporates Caching layer, Persistence layer and distributed lock to get/set the pending orders  
+
 * **Auth-Middleware**  
 Defines the authentication middleware that guards endpoints agains unauthorized access  
 
