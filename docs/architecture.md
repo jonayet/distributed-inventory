@@ -46,12 +46,12 @@ Incorporate express.js framework to start the http service
 <br/><br/>
   
 #### Get price flow
-<img src="./get-price.png?raw=true" width="300" title="Get price">
+<img src="./get-price.png?raw=true" width="200" title="Get price">
 <br/><br/>
 
 #### Consume inventory flow
-<img src="./consume-inventory.png?raw=true" width="300" title="Consume inventory">
+<img src="./consume-inventory.png?raw=true" width="400" title="Consume inventory">
 <br/><br/>
 
 #### Update stock flow
-<img src="./update-stock.png?raw=true" width="300" title="Update stock">
+<img src="./update-stock.png?raw=true" width="200" title="Update stock">

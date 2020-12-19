@@ -36,6 +36,10 @@ npm install && npm test
 ```
 <br/><br/>
 
+## Solution architecture
+See the architecture [here](docs/architecture.md)
+<br/><br/>
+
 ## Interacting with the service
 First run the inventory service in [Development](#How-to-run-the-service-in-Development-mode?) or [Production](#How-to-run-the-service-in-Production-mode?) mode.
 <br/><br/>
@@ -48,15 +52,15 @@ a GET call to http://localhost:8080?token=user-1&client=web&lang=en-us&count=5&p
 
 #### Request parameters,
 * **token**  
-Token parameter is simplified token which will provoke unauthorize access to the service.
+Token parameter is simplified token which will provoke unauthorize access to the service.  
 This is a mendatory field, if not provided an unauthenticated error will be send.
 
 * **client**  
-Client parameter is used to identify the client. It can be **web** or **mobile**.
+Client parameter is used to identify the client. It can be **web** or **mobile**.  
 This is an optional parameter, **web** will be used by default.
 
 * **lang**  
-Lang parameter is used to select the currency for price.
+Lang parameter is used to select the currency for price.  
 This is an optional param. default value is **en-us**.
 
 * **count**  
@@ -65,9 +69,10 @@ Its default value is **5**.
 
 * **page**  
 Page is used to determine to find which segment of data will be provided.  
+<br/>
 For example,  
-Lets say total inventory is 30. If **count** is 10, there will be 3 page segment.
-In this case, valid page **value** will be 0, 1 and 2.
+Lets say total number of inventory is 30. If **count** is 10, there will be 3 page segments.  
+In this case, valid page **value** are be 0, 1 and 2.
 <br/><br/>
 
 #### Example Response
@@ -107,11 +112,11 @@ with following payload.
 
 #### Request parameters,
 * **token**  
-Token parameter is simplified token which will be used to identify the user.
+Token parameter is simplified token which will be used to identify the user.  
 This is a mendatory field, if not provided an unauthenticated error will be send.
 
 * **client**  
-Client parameter is used to identify the client. It can be **web** or **mobile**.
+Client parameter is used to identify the client. It can be **web** or **mobile**.  
 This is an optional parameter, **web** will be used by default.
 
 Payload
@@ -133,13 +138,12 @@ After this point 3 different things can happen.
 1) All the items has sufficent quantity and can be baught successfully.  
 In this case success response will be send.
 
-2) None of the items has sufficient quantity.
+2) None of the items has sufficient quantity.  
 In this case error message will be send.
 
-3) Some of the items as sufficient quantity and some doesn't has.
-In this case eligible items will be hold for 5 minutes in requested quantity.
-
-Following respons will be send,
+3) Some of the items as sufficient quantity and some doesn't has.  
+In this case eligible items will be hold for 5 minutes in requested quantity  
+and following respons will be send,
 
 ```javascript
 {
@@ -157,12 +161,58 @@ Following respons will be send,
   ],
   confirmation: {
     confirm: '/confirm/ae23fcc2',
-    cancel: '/confirm/ae23fcc2',
+    cancel: '/cancel/ae23fcc2',
+    status: '/status/ae23fcc2'
     validTill: '2018-04-23T10:26:00.996Z'
   }
 }
 ```
-
+<br/><br/>
 Now user have 2 options,  
 1) They can confirm the order by making a POST call to http://localhost:8080/confirm/ae23fcc2?token=user-1&client=mobile
 2) Or they can cancel the order by making a POST call to http://localhost:8080/cancel/ae23fcc2?token=user-1&client=mobile
+<br/><br/>
+
+To check the validity of a pending order client can make a Get call to http://localhost:8080/status/be23dcc3?token=user-1&client=web.  
+This endpoint will return following response.
+
+```javascript
+{
+  availableItems: [
+    {
+      productId: '102',
+      quantity: 1
+    }
+  ],
+  unavailableItems: [
+    {
+      productId: '101',
+      quantity: 2
+    }
+  ],
+  confirmation: {
+    confirm: '/confirm/ae23fcc2',
+    cancel: '/cancel/ae23fcc2',
+    status: '/status/ae23fcc2'
+    validTill: '2018-04-23T10:26:00.996Z'
+  }
+}
+```
+<br/>
+
+Finally, client can check anytime if an user has any pending order by making a Get call to http://localhost:8080/pending?token=user-1&client=web.  
+Which will give followign response.
+```javascript
+{
+  pendingOrders: [
+    {
+      orderId: 'ae23fcc2',
+      validTill: '2018-04-23T10:26:00.996Z'
+    },
+    {
+      orderId: 'be23dcc3',
+      validTill: '2018-04-23T10:26:00.996Z'
+    }
+  ]
+}
+```
