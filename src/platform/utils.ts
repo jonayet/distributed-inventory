@@ -1,9 +1,9 @@
-const { v4: uuidv4 }= require('uuid')
+const { v4: uuidv4 } = require('uuid')
 
-export function getUid() {
+export function getUid () {
   return uuidv4() as string
 }
 
-export function getTime() {
+export function getTime () {
   return Date.now()
 }

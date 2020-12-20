@@ -1,9 +1,11 @@
+import { join } from 'path'
+
 const moduleAlias = require('module-alias')
 
 // register virtual modules
 moduleAlias.addAliases({
-  '@platform': __dirname + '/platform',
-  '@inventory': __dirname + '/inventory'
+  '@platform': join(__dirname, '/platform'),
+  '@inventory': join(__dirname, '/inventory')
 })
 
-import '@inventory/app'
+require('@inventory/app')

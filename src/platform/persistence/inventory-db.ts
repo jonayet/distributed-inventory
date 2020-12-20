@@ -1,8 +1,6 @@
 import { getUid, getTime } from '../utils'
 import inventoryTable from './inventorySeed.json'
 
-const pendingOrdersTable: PendingOrder[] = []
-
 const ONE_MINUTE = 60 * 1000
 const PENDING_ORDER_DURATION = 5 * ONE_MINUTE
 
@@ -21,19 +19,21 @@ export interface PendingOrder extends PendingOrderReuest {
   validTill: string
 }
 
-export async function getInventory() {
+const pendingOrdersTable: PendingOrder[] = []
+
+export async function getInventory () {
   return inventoryTable
 }
 
-export async function updateStock(productId: string, availableQuantity: number, actualQuantity: number) {
+export async function updateStock (productId: string, availableQuantity: number, actualQuantity: number) {
   const product = inventoryTable.find(product => product.productId === productId)
-  if(!product) return Promise.reject(`ProductId: '${productId}' is invalid`)
+  if (!product) return Promise.reject(new Error(`ProductId: '${productId}' is invalid`))
 
   product.actualQuantity = actualQuantity
   product.availableQuantity = availableQuantity
 }
 
-export async function addPendingOrder(data: PendingOrderReuest) {
+export async function addPendingOrder (data: PendingOrderReuest) {
   const id = getUid()
   const validTill = new Date(getTime() + PENDING_ORDER_DURATION).toUTCString()
   pendingOrdersTable.push({
@@ -45,18 +45,18 @@ export async function addPendingOrder(data: PendingOrderReuest) {
   return id
 }
 
-export async function getPendingOrders(userId: string) {
+export async function getPendingOrders (userId: string) {
   return pendingOrdersTable.filter(order => order.userId === userId)
 }
 
-export async function removePendingOrder(orderId: string) {
+export async function removePendingOrder (orderId: string) {
   const otherOrders = pendingOrdersTable.filter(order => order.id !== orderId)
-  if (otherOrders.length === pendingOrdersTable.length) return Promise.reject(`Order Id: '${orderId}' is invalid`)
+  if (otherOrders.length === pendingOrdersTable.length) return Promise.reject(new Error(`Order Id: '${orderId}' is invalid`))
 
   clearPendingOrdersTable()
   otherOrders.forEach(order => pendingOrdersTable.push(order))
 }
 
-export function clearPendingOrdersTable() {
+export function clearPendingOrdersTable () {
   pendingOrdersTable.length = 0
 }

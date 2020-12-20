@@ -14,32 +14,38 @@ Provides caching function for different services and abstracts the underlying ca
 
 * **@platform/distribute-lock**  
 Provides a central lock manager to orchrastrate underlying infrastructure in a distribute environment.
+
+* **@platform/logging**  
+Provides a central infrastructure for logging.
 <br/><br/>
 
 ### Inventory service
-* **Controller**  
-Defines the endpoints with appropriate HTTP methods and uses Service to implement them  
+* **Controllers**  
+Defines the endpoints with appropriate HTTP methods and uses Service to implement them   
 
-* **Service**  
-Uses Inventory and Price repository and build the response  
+* **Services**  
+Uses Inventory and Price repository and build the response   
+
+* **Config**  
+Provides service wide configuration.  
 
 * **Price repository**  
-Incorporates Caching layer, Price service and distributed lock to get/set the price data for a product  
+Incorporates Caching layer, Price service and distributed lock to get/set the price data for a product.  
 
 * **Inventory repository**  
-Incorporates Caching layer, Persistence layer and distributed lock to get/set the inventory  
+Incorporates Caching layer, Persistence layer and distributed lock to get/set the inventory.  
 
 * **Pending orders repository**  
-Incorporates Caching layer, Persistence layer and distributed lock to get/set the pending orders  
+Incorporates Caching layer, Persistence layer and distributed lock to get/set the pending orders.  
 
 * **Auth-Middleware**  
-Defines the authentication middleware that guards endpoints agains unauthorized access  
+Defines the authentication middleware that guards endpoints agains unauthorized access.  
 
 * **Routes**  
-Defines the endponts for the inventory services  
+Defines the endponts for the inventory services.  
 
 * **App**  
-Incorporate express.js framework to start the http service
+Incorporate express.js framework to start the http service.
 <br/><br/>
 
 ### Inventory service flows
