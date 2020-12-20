@@ -1,7 +1,7 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 
-import swaggerSpecs from './swagger.json'
+import swaggerSpecs from '../../docs/swagger.json'
 import { RegisterRoutes } from './routes'
 import { errorHandler, notFoundHandler } from './middleware'
 import logger from '@platform/logging/logger'

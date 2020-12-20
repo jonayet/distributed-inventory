@@ -8,6 +8,8 @@ COPY tsconfig.json .
 COPY ./src ./src
 RUN npm run build
 
+COPY ./docs ./docs
+
 FROM node:14.15.2-alpine3.10
 WORKDIR /app
 
