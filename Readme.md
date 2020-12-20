@@ -1,6 +1,12 @@
 # Distributed inventory service
 
-### How to run the service in Development mode?
+## View Live Swagger documentation: https://jonayet.github.io/distributed-inventory
+<br/>
+
+## View the solution [Architecture](docs/Architecture.md)
+<br/>
+
+## How to run the service in Development mode?
 Use **Docker**
 ```shell
 docker-compose -f docker-compose-dev.yaml up
@@ -14,7 +20,7 @@ npm install && npm run dev
 ```
 <br/><br/>
 
-### How to run the service in Production mode?
+## How to run the service in Production mode?
 Use **Docker**
 ```shell
 docker-compose up
@@ -26,9 +32,15 @@ First run the product-engine service then start the prod server.
 docker run adichallenge/adichallenge:product-engine
 npm install && npm run build && npm start
 ```
+<br/>
+
+## After running the inventory service, open http://localhost:8080/ to see the endpoints running.
+<br/>
+
+## And browse http://localhost:8081/ to see the Swagger specs.
 <br/><br/>
 
-### How to test the specs?
+## How to test the specs?
 Use **Docker**
 ```shell
 docker-compose -f docker-compose-test.yaml up
@@ -38,16 +50,15 @@ Or **NodeJs**
 ```shell
 npm install && npm test
 ```
-<br/><br/>
+<br/>
 
-## Solution architecture
-See the architecture [here](docs/architecture.md)
-<br/><br/>
-
-## Interacting with the service
+# Interacting with the service
 First run the inventory service in [Development](#How-to-run-the-service-in-Development-mode?) or [Production](#How-to-run-the-service-in-Production-mode?) mode.
 
-Swagger document can be found here: https://jonayet.github.io/distributed-inventory
+### Please note:
+Following section were written before start developing the sllution.
+It helped to gather all the thoughts about the distributed inventory problem.
+Swagger documentation is recommanded for the latest specs.
 
 Provide a authentication token in **access_token** parameter in the query.  
 Token parameter is a simple string which will be used to identify the user.  
@@ -181,16 +192,10 @@ This endpoint will return following response.
 
 ```javascript
 {
-  availableItems: [
+  items: [
     {
       productId: '102',
       quantity: 1
-    }
-  ],
-  unavailableItems: [
-    {
-      productId: '101',
-      quantity: 2
     }
   ],
   confirmation: {
@@ -206,16 +211,14 @@ This endpoint will return following response.
 Finally, client can check anytime if an user has any pending order by making a Get call to http://localhost:8080/pending?token=user-1&client=web.  
 Which will give followign response.
 ```javascript
-{
-  pendingOrders: [
-    {
-      orderId: 'ae23fcc2',
-      validTill: '2018-04-23T10:26:00.996Z'
-    },
-    {
-      orderId: 'be23dcc3',
-      validTill: '2018-04-23T10:26:00.996Z'
-    }
-  ]
-}
+[
+  {
+    orderId: 'ae23fcc2',
+    validTill: '2018-04-23T10:26:00.996Z'
+  },
+  {
+    orderId: 'be23dcc3',
+    validTill: '2018-04-23T10:26:00.996Z'
+  }
+]
 ```

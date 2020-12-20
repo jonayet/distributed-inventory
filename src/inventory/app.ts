@@ -9,6 +9,10 @@ import logger from '@platform/logging/logger'
 // controllers need to be referenced in order to get crawled by the generator
 import './controllers/InventoryController'
 import './controllers/OrderController'
+import './controllers/ConfirmController'
+import './controllers/CancelController'
+import './controllers/StatusController'
+import './controllers/PendingController'
 // ########################################################################
 
 const cors = require('cors')

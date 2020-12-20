@@ -19,9 +19,18 @@ export interface PendingOrder extends PendingOrderReuest {
   validTill: string
 }
 
+export interface InventoryItem {
+  productId: string
+  title: string
+  actualQuantity: number
+  availableQuantity: number
+  createdOn: string
+  modifiedOn: string
+}
+
 const pendingOrdersTable: PendingOrder[] = []
 
-export async function getInventory () {
+export async function getInventory (): Promise<InventoryItem[]> {
   return inventoryTable
 }
 
@@ -42,11 +51,16 @@ export async function addPendingOrder (data: PendingOrderReuest) {
     validTill
   })
 
-  return id
+  return {
+    id,
+    validTill
+  }
 }
 
 export async function getPendingOrders (userId: string) {
-  return pendingOrdersTable.filter(order => order.userId === userId)
+  return pendingOrdersTable.filter(
+    order => order.userId === userId && new Date(order.validTill).getTime() > Date.now()
+  )
 }
 
 export async function removePendingOrder (orderId: string) {

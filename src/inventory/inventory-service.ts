@@ -20,7 +20,7 @@ export async function getInventory (count: number, page: number, client: string,
     const { price } = await getPrice(p.productId, lang)
     return {
       productId: p.productId,
-      available: p.actualQuantity,
+      available: p.availableQuantity,
       price
     }
   })

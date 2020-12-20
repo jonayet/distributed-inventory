@@ -62,7 +62,8 @@ describe('Inventory DB specs', () => {
         ]
       }
 
-      await expect(addPendingOrder(pendingOrder)).resolves.toHaveLength(36)
+      const { id } = await addPendingOrder(pendingOrder)
+      expect(id).toHaveLength(36)
     })
 
     it('gets pending orders', async () => {
@@ -96,9 +97,9 @@ describe('Inventory DB specs', () => {
           }
         ]
       }
-      const orderId = await addPendingOrder(pendingOrder)
+      const { id } = await addPendingOrder(pendingOrder)
 
-      await expect(removePendingOrder(orderId)).resolves.toBeUndefined()
+      await expect(removePendingOrder(id)).resolves.toBeUndefined()
     })
 
     it('fails removing an invalid pending order', async () => {

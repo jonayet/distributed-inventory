@@ -6,18 +6,30 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
+			"UInt32": {
+				"type": "integer",
+				"format": "int32",
+				"default": "0",
+				"description": "Unsigned Integer",
+				"minimum": 0
+			},
+			"UFloat32": {
+				"type": "number",
+				"format": "float",
+				"default": "0",
+				"description": "Unsigned Decimal",
+				"minimum": 0
+			},
 			"Product": {
 				"properties": {
 					"productId": {
 						"type": "string"
 					},
 					"available": {
-						"type": "integer",
-						"format": "int32"
+						"$ref": "#/components/schemas/UInt32"
 					},
 					"price": {
-						"type": "integer",
-						"format": "int32"
+						"$ref": "#/components/schemas/UFloat32"
 					}
 				},
 				"required": [
@@ -42,8 +54,7 @@
 					"$pagination": {
 						"properties": {
 							"remainingItems": {
-								"type": "number",
-								"format": "double"
+								"$ref": "#/components/schemas/UInt32"
 							}
 						},
 						"required": [
@@ -65,20 +76,16 @@
 					"name": {
 						"type": "string"
 					},
+					"status": {
+						"$ref": "#/components/schemas/UInt32"
+					},
 					"message": {
 						"type": "string"
-					},
-					"stack": {
-						"type": "string"
-					},
-					"status": {
-						"type": "number",
-						"format": "double",
-						"default": 401
 					}
 				},
 				"required": [
 					"name",
+					"status",
 					"message"
 				],
 				"type": "object",
@@ -111,7 +118,8 @@
 				"enum": [
 					"web",
 					"mobile"
-				]
+				],
+				"default": "web"
 			},
 			"Lang": {
 				"type": "string",
@@ -120,7 +128,8 @@
 					"en-gb",
 					"de-de",
 					"es-es"
-				]
+				],
+				"default": "en-us"
 			},
 			"OrderItem": {
 				"properties": {
@@ -128,13 +137,129 @@
 						"type": "string"
 					},
 					"quantity": {
-						"type": "integer",
-						"format": "int32"
+						"$ref": "#/components/schemas/UInt32"
 					}
 				},
 				"required": [
 					"productId",
 					"quantity"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ConfirmationLinks": {
+				"properties": {
+					"confirm": {
+						"type": "string"
+					},
+					"cancel": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"validTill": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"confirm",
+					"cancel",
+					"status",
+					"validTill"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"PendingOrderResponse": {
+				"properties": {
+					"availableItems": {
+						"items": {
+							"$ref": "#/components/schemas/OrderItem"
+						},
+						"type": "array"
+					},
+					"unavailableItems": {
+						"items": {
+							"$ref": "#/components/schemas/OrderItem"
+						},
+						"type": "array"
+					},
+					"confirmation": {
+						"$ref": "#/components/schemas/ConfirmationLinks"
+					}
+				},
+				"required": [
+					"availableItems",
+					"unavailableItems",
+					"confirmation"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"BadRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					},
+					"stack": {
+						"type": "string"
+					},
+					"status": {
+						"type": "number",
+						"format": "double",
+						"default": 400
+					}
+				},
+				"required": [
+					"name",
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UUID": {
+				"type": "string",
+				"minLength": 2
+			},
+			"PendingOrderStatus": {
+				"properties": {
+					"items": {
+						"items": {
+							"$ref": "#/components/schemas/OrderItem"
+						},
+						"type": "array"
+					},
+					"confirmation": {
+						"$ref": "#/components/schemas/ConfirmationLinks"
+					}
+				},
+				"required": [
+					"items",
+					"confirmation"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"DateTime": {
+				"type": "string",
+				"description": "DateTime"
+			},
+			"PendingOrder": {
+				"properties": {
+					"orderId": {
+						"$ref": "#/components/schemas/UUID"
+					},
+					"validTill": {
+						"$ref": "#/components/schemas/DateTime"
+					}
+				},
+				"required": [
+					"orderId",
+					"validTill"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -215,7 +340,8 @@
 						"schema": {
 							"default": 5,
 							"format": "int32",
-							"type": "integer"
+							"type": "integer",
+							"minimum": 1
 						}
 					},
 					{
@@ -224,13 +350,11 @@
 						"name": "page",
 						"required": false,
 						"schema": {
-							"default": 0,
-							"format": "double",
-							"type": "number"
+							"$ref": "#/components/schemas/UInt32"
 						}
 					},
 					{
-						"description": "client parameter is used to identify the client. It can be **web** or **mobile**.\nThis is an optional parameter, **web** will be used by default.",
+						"description": "Client parameter is used to identify the client. It can be **web** or **mobile**.\nThis is an optional parameter, **web** will be used by default.",
 						"in": "query",
 						"name": "client",
 						"required": false,
@@ -254,8 +378,50 @@
 			"post": {
 				"operationId": "CreateOrder",
 				"responses": {
-					"204": {
-						"description": "No content"
+					"201": {
+						"description": "Order created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/PendingOrderResponse"
+										},
+										{
+											"properties": {
+												"message": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"message"
+											],
+											"type": "object"
+										}
+									]
+								}
+							}
+						}
+					},
+					"202": {
+						"description": "Pending order confirmation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PendingOrderResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid order",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BadRequest"
+								}
+							}
+						}
 					},
 					"401": {
 						"description": "Unauthorized",
@@ -268,6 +434,7 @@
 						}
 					}
 				},
+				"description": "Order controller",
 				"tags": [
 					"OrderController"
 				],
@@ -278,7 +445,7 @@
 				],
 				"parameters": [
 					{
-						"description": "client parameter is used to identify the client. It can be **web** or **mobile**.\nThis is an optional parameter, **web** will be used by default.",
+						"description": "Client parameter is used to identify the client. It can be **web** or **mobile**.\nThis is an optional parameter, **web** will be used by default.",
 						"in": "query",
 						"name": "client",
 						"required": false,
@@ -288,6 +455,7 @@
 					}
 				],
 				"requestBody": {
+					"description": "Body is an array of item id and quantity.",
 					"required": true,
 					"content": {
 						"application/json": {
@@ -296,10 +464,235 @@
 									"$ref": "#/components/schemas/OrderItem"
 								},
 								"type": "array"
-							}
+							},
+							"example": [
+								{
+									"productId": "FZ2725",
+									"quantity": 2
+								},
+								{
+									"productId": "H67407",
+									"quantity": 2
+								},
+								{
+									"productId": "FX7978",
+									"quantity": 4
+								}
+							]
 						}
 					}
 				}
+			}
+		},
+		"/confirm/{orderId}": {
+			"post": {
+				"operationId": "ConfirmOrder",
+				"responses": {
+					"201": {
+						"description": "Order created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AuthorizationError"
+								}
+							}
+						}
+					}
+				},
+				"description": "Confirm order controller",
+				"tags": [
+					"ConfirmController"
+				],
+				"security": [
+					{
+						"api_key": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "OrderId is an UUID. It will be used to find the associated pending order.",
+						"in": "path",
+						"name": "orderId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/UUID"
+						}
+					},
+					{
+						"description": "Client parameter is used to identify the client. It can be **web** or **mobile**.\nThis is an optional parameter, **web** will be used by default.",
+						"in": "query",
+						"name": "client",
+						"required": false,
+						"schema": {
+							"$ref": "#/components/schemas/Client"
+						}
+					}
+				]
+			}
+		},
+		"/cancel/{orderId}": {
+			"post": {
+				"operationId": "CancelOrder",
+				"responses": {
+					"200": {
+						"description": "Order canceled"
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AuthorizationError"
+								}
+							}
+						}
+					}
+				},
+				"description": "Cancel order controller",
+				"tags": [
+					"CancelController"
+				],
+				"security": [
+					{
+						"api_key": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "OrderId is an UUID. It will be used to find the associated pending order.",
+						"in": "path",
+						"name": "orderId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/UUID"
+						}
+					},
+					{
+						"description": "Client parameter is used to identify the client. It can be **web** or **mobile**.\nThis is an optional parameter, **web** will be used by default.",
+						"in": "query",
+						"name": "client",
+						"required": false,
+						"schema": {
+							"$ref": "#/components/schemas/Client"
+						}
+					}
+				]
+			}
+		},
+		"/status/{orderId}": {
+			"get": {
+				"operationId": "GetOrderStatus",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PendingOrderStatus"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AuthorizationError"
+								}
+							}
+						}
+					}
+				},
+				"description": "Status controller",
+				"tags": [
+					"StatusController"
+				],
+				"security": [
+					{
+						"api_key": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "OrderId is an UUID. It will be used to find the associated pending order.",
+						"in": "path",
+						"name": "orderId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/UUID"
+						}
+					},
+					{
+						"description": "Client parameter is used to identify the client. It can be **web** or **mobile**.\nThis is an optional parameter, **web** will be used by default.",
+						"in": "query",
+						"name": "client",
+						"required": false,
+						"schema": {
+							"$ref": "#/components/schemas/Client"
+						}
+					}
+				]
+			}
+		},
+		"/pending": {
+			"get": {
+				"operationId": "GetPendingOrders",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/PendingOrder"
+									},
+									"type": "array"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AuthorizationError"
+								}
+							}
+						}
+					}
+				},
+				"description": "Pending order controller",
+				"tags": [
+					"PendingController"
+				],
+				"security": [
+					{
+						"api_key": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "Client parameter is used to identify the client. It can be **web** or **mobile**.\nThis is an optional parameter, **web** will be used by default.",
+						"in": "query",
+						"name": "client",
+						"required": false,
+						"schema": {
+							"$ref": "#/components/schemas/Client"
+						}
+					}
+				]
 			}
 		}
 	},

@@ -6,18 +6,36 @@ import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute, H
 import { InventoryController } from './controllers/InventoryController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { OrderController } from './controllers/OrderController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { ConfirmController } from './controllers/ConfirmController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { CancelController } from './controllers/CancelController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { StatusController } from './controllers/StatusController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { PendingController } from './controllers/PendingController';
 import { expressAuthentication } from './authentication';
 import * as express from 'express';
 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
+    "UInt32": {
+        "dataType": "refAlias",
+        "type": {"dataType":"integer","validators":{"isInt":{"errorMsg":"please provide a unsigned integer value"},"minimum":{"errorMsg":"value must be greater that or equal to 0","value":0}},"default":"0"},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "UFloat32": {
+        "dataType": "refAlias",
+        "type": {"dataType":"float","validators":{"isFloat":{"errorMsg":"please provide a floationg point value"},"minimum":{"errorMsg":"value must be greater that or equal to 0","value":0}},"default":"0"},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Product": {
         "dataType": "refObject",
         "properties": {
             "productId": {"dataType":"string","required":true},
-            "available": {"dataType":"integer","required":true},
-            "price": {"dataType":"integer","required":true},
+            "available": {"ref":"UInt32","required":true},
+            "price": {"ref":"UFloat32","required":true},
         },
         "additionalProperties": false,
     },
@@ -27,7 +45,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "inventory": {"dataType":"array","array":{"ref":"Product"},"required":true},
             "currency": {"dataType":"string","required":true},
-            "$pagination": {"dataType":"nestedObjectLiteral","nestedProperties":{"remainingItems":{"dataType":"double","required":true}},"required":true},
+            "$pagination": {"dataType":"nestedObjectLiteral","nestedProperties":{"remainingItems":{"ref":"UInt32","required":true}},"required":true},
         },
         "additionalProperties": false,
     },
@@ -36,9 +54,8 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "name": {"dataType":"string","required":true},
+            "status": {"ref":"UInt32","required":true},
             "message": {"dataType":"string","required":true},
-            "stack": {"dataType":"string"},
-            "status": {"dataType":"double","default":401},
         },
         "additionalProperties": false,
     },
@@ -54,19 +71,79 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Client": {
         "dataType": "refAlias",
-        "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["web"]},{"dataType":"enum","enums":["mobile"]}],"validators":{}},
+        "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["web"]},{"dataType":"enum","enums":["mobile"]}],"validators":{},"default":"web"},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Lang": {
         "dataType": "refAlias",
-        "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["en-us"]},{"dataType":"enum","enums":["en-gb"]},{"dataType":"enum","enums":["de-de"]},{"dataType":"enum","enums":["es-es"]}],"validators":{}},
+        "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["en-us"]},{"dataType":"enum","enums":["en-gb"]},{"dataType":"enum","enums":["de-de"]},{"dataType":"enum","enums":["es-es"]}],"validators":{},"default":"en-us"},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "OrderItem": {
         "dataType": "refObject",
         "properties": {
             "productId": {"dataType":"string","required":true},
-            "quantity": {"dataType":"integer","required":true},
+            "quantity": {"ref":"UInt32","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ConfirmationLinks": {
+        "dataType": "refObject",
+        "properties": {
+            "confirm": {"dataType":"string","required":true},
+            "cancel": {"dataType":"string","required":true},
+            "status": {"dataType":"string","required":true},
+            "validTill": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "PendingOrderResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "availableItems": {"dataType":"array","array":{"ref":"OrderItem"},"required":true},
+            "unavailableItems": {"dataType":"array","array":{"ref":"OrderItem"},"required":true},
+            "confirmation": {"ref":"ConfirmationLinks","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "BadRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "name": {"dataType":"string","required":true},
+            "message": {"dataType":"string","required":true},
+            "stack": {"dataType":"string"},
+            "status": {"dataType":"double","default":400},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "UUID": {
+        "dataType": "refAlias",
+        "type": {"dataType":"string","validators":{"minLength":{"errorMsg":"minimum length is 2","value":2}}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "PendingOrderStatus": {
+        "dataType": "refObject",
+        "properties": {
+            "items": {"dataType":"array","array":{"ref":"OrderItem"},"required":true},
+            "confirmation": {"ref":"ConfirmationLinks","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "DateTime": {
+        "dataType": "refAlias",
+        "type": {"dataType":"string","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "PendingOrder": {
+        "dataType": "refObject",
+        "properties": {
+            "orderId": {"ref":"UUID","required":true},
+            "validTill": {"ref":"DateTime","required":true},
         },
         "additionalProperties": false,
     },
@@ -85,8 +162,8 @@ export function RegisterRoutes(app: express.Router) {
             authenticateMiddleware([{"api_key":[]}]),
             function (request: any, response: any, next: any) {
             const args = {
-                    count: {"default":5,"in":"query","name":"count","dataType":"integer","validators":{"isInt":{"errorMsg":"count"}}},
-                    page: {"default":0,"in":"query","name":"page","dataType":"double"},
+                    count: {"default":5,"in":"query","name":"count","dataType":"integer","validators":{"isInt":{"errorMsg":"please provide a unsigned integer value"},"minimum":{"errorMsg":"value must be greater that or equal to 1","value":1}}},
+                    page: {"default":0,"in":"query","name":"page","ref":"UInt32"},
                     client: {"default":"web","in":"query","name":"client","ref":"Client"},
                     lang: {"default":"en-us","in":"query","name":"lang","ref":"Lang"},
             };
@@ -112,7 +189,8 @@ export function RegisterRoutes(app: express.Router) {
             function (request: any, response: any, next: any) {
             const args = {
                     client: {"default":"web","in":"query","name":"client","ref":"Client"},
-                    items: {"in":"body","name":"items","required":true,"dataType":"array","array":{"ref":"OrderItem"}},
+                    body: {"in":"body","name":"body","required":true,"dataType":"array","array":{"ref":"OrderItem"}},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -128,6 +206,105 @@ export function RegisterRoutes(app: express.Router) {
 
 
             const promise = controller.createOrder.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/confirm/:orderId',
+            authenticateMiddleware([{"api_key":[]}]),
+            function (request: any, response: any, next: any) {
+            const args = {
+                    orderId: {"in":"path","name":"orderId","required":true,"ref":"UUID"},
+                    client: {"default":"web","in":"query","name":"client","ref":"Client"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new ConfirmController();
+
+
+            const promise = controller.confirmOrder.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/cancel/:orderId',
+            authenticateMiddleware([{"api_key":[]}]),
+            function (request: any, response: any, next: any) {
+            const args = {
+                    orderId: {"in":"path","name":"orderId","required":true,"ref":"UUID"},
+                    client: {"default":"web","in":"query","name":"client","ref":"Client"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new CancelController();
+
+
+            const promise = controller.cancelOrder.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/status/:orderId',
+            authenticateMiddleware([{"api_key":[]}]),
+            function (request: any, response: any, next: any) {
+            const args = {
+                    orderId: {"in":"path","name":"orderId","required":true,"ref":"UUID"},
+                    client: {"default":"web","in":"query","name":"client","ref":"Client"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new StatusController();
+
+
+            const promise = controller.getOrderStatus.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/pending',
+            authenticateMiddleware([{"api_key":[]}]),
+            function (request: any, response: any, next: any) {
+            const args = {
+                    client: {"default":"web","in":"query","name":"client","ref":"Client"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new PendingController();
+
+
+            const promise = controller.getPendingOrders.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

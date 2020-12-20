@@ -8,11 +8,11 @@ const cache = new CacheStore()
 const inventoryKey = 'inventory-key'
 
 type InventoryRepo = ReturnType<typeof getInventoryTable>
-
 export async function getInventory (): InventoryRepo {
-  if (await cache.has(inventoryKey)) {
-    return cache.get(inventoryKey)
-  }
+  // TODO: add cache layer
+  // if (await cache.has(inventoryKey)) {
+  //   return cache.get(inventoryKey)
+  // }
 
   let lockRef
   try {

@@ -8,6 +8,5 @@ services:
     user: "node"
     environment:
       NODE_ENV: development
-    volumes:      
+    volumes:
       - ./:/app
-      - ./node_modules:/app/node_modules

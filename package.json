@@ -17,7 +17,7 @@
     "test": "jest --testPathPattern='.*\\.spec\\.ts$'",
     "app": "node dist/index.js",
     "lint": "eslint --ext .ts src/",
-    "swagger-ui": "http-server -s -p 8081 docs",
+    "swagger-ui": "serve -p 8081 docs",
     "app:watch": "nodemon --watch src --ignore *.spec.ts --ignore controllers/*.ts src/index.ts",
     "tsoa:watch": "nodemon --watch src/inventory/controllers -e ts --exec tsoa spec-and-routes"
   },
@@ -26,8 +26,8 @@
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "http-server": "^0.12.3",
     "module-alias": "^2.2.2",
+    "serve": "^11.3.2",
     "tsoa": "^3.4.0",
     "uuid": "^8.3.2"
   },

@@ -1,7 +1,7 @@
 import logger from '@platform/logging/logger'
 import { Request, Response, NextFunction } from 'express'
 import { ValidateError } from 'tsoa'
-import { AuthorizationError } from './authentication'
+import { AuthorizationError, InvalidOrderError } from './errors'
 
 export function notFoundHandler (_: Request, res: Response) {
   res.status(404).send({
@@ -19,9 +19,13 @@ export function errorHandler (err: any, req: Request, res: Response, next: NextF
   }
 
   if (err instanceof AuthorizationError) {
-    logger.log('log', `Caught Authorization Error on ${req.path}`)
+    return res.status(err.status).json(err)
+  }
+
+  if (err instanceof InvalidOrderError) {
     return res.status(err.status).json({
-      message: err.message
+      message: err.message,
+      invalidItems: err.invalidItems
     })
   }
 
