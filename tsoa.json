@@ -4,9 +4,17 @@
   "controllerPathGlobs": ["src/inventory/**/*Controller.ts"],
   "spec": {
     "specVersion": 3,
-    "outputDirectory": "src/inventory"
+    "outputDirectory": "src/inventory",
+    "securityDefinitions": {
+      "api_key": {
+          "type": "apiKey",
+          "name": "access_token",
+          "in": "query"
+      }
+    }
   },
   "routes": {
-    "routesDir": "src/inventory"
+    "routesDir": "src/inventory",
+    "authenticationModule": "src/inventory/authentication.ts"
   }
 }

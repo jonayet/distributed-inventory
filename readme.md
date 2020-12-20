@@ -6,9 +6,11 @@ Use **Docker**
 docker-compose -f docker-compose-dev.yaml up
 ```
 
-Or **NodeJs**
+Or **NodeJs**  
+First run the product-engine service then start the dev server.
 ```shell
-npm install && npm start
+docker run adichallenge/adichallenge:product-engine
+npm install && npm run dev
 ```
 <br/><br/>
 
@@ -18,9 +20,11 @@ Use **Docker**
 docker-compose up
 ```
 
-Or **NodeJs**
+Or **NodeJs**  
+First run the product-engine service then start the prod server.
 ```shell
-npm install && npm run build && node ./dist/index.js
+docker run adichallenge/adichallenge:product-engine
+npm install && npm run build && npm start
 ```
 <br/><br/>
 
@@ -42,6 +46,11 @@ See the architecture [here](docs/architecture.md)
 
 ## Interacting with the service
 First run the inventory service in [Development](#How-to-run-the-service-in-Development-mode?) or [Production](#How-to-run-the-service-in-Production-mode?) mode.
+
+Provide a authentication token in **access_token** parameter in the query.  
+Token parameter is a simple string which will be used to identify the user.  
+Example: user-1  
+If not provided an unauthenticated error will be send.
 <br/><br/>
 
 ### Get Inventory
@@ -50,11 +59,7 @@ First run the inventory service in [Development](#How-to-run-the-service-in-Deve
 When a client wants to get the inventory they need to make  
 a GET call to http://localhost:8080?token=user-1&client=web&lang=en-us&count=5&page=0
 
-#### Request parameters,
-* **token**  
-Token parameter is simplified token which will provoke unauthorize access to the service.  
-This is a mendatory field, if not provided an unauthenticated error will be send.
-
+#### Request parameters  
 * **client**  
 Client parameter is used to identify the client. It can be **web** or **mobile**.  
 This is an optional parameter, **web** will be used by default.
@@ -111,10 +116,6 @@ This will be a POST call to http://localhost:8080/order?token=user-1&client=web
 with following payload.
 
 #### Request parameters,
-* **token**  
-Token parameter is simplified token which will be used to identify the user.  
-This is a mendatory field, if not provided an unauthenticated error will be send.
-
 * **client**  
 Client parameter is used to identify the client. It can be **web** or **mobile**.  
 This is an optional parameter, **web** will be used by default.

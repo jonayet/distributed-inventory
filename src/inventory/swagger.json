@@ -60,6 +60,28 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"ValidattionError": {
+				"properties": {
+					"message": {
+						"type": "string",
+						"enum": [
+							"Validation failed"
+						],
+						"nullable": false
+					},
+					"details": {
+						"properties": {},
+						"additionalProperties": {},
+						"type": "object"
+					}
+				},
+				"required": [
+					"message",
+					"details"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"Client": {
 				"type": "string",
 				"enum": [
@@ -77,7 +99,13 @@
 				]
 			}
 		},
-		"securitySchemes": {}
+		"securitySchemes": {
+			"api_key": {
+				"type": "apiKey",
+				"name": "access_token",
+				"in": "query"
+			}
+		}
 	},
 	"info": {
 		"title": "distributed-inventory",
@@ -106,24 +134,38 @@
 								}
 							}
 						}
+					},
+					"422": {
+						"description": "Validation Failed",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ValidattionError"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
 					}
 				},
 				"description": "Retrieves the inventory.",
 				"tags": [
 					"InventoryController"
 				],
-				"security": [],
-				"parameters": [
+				"security": [
 					{
-						"description": "Token parameter is simplified token which will provoke unauthorize access to the service.\nThis is a mendatory field, if not provided an unauthenticated error will be send.",
-						"in": "query",
-						"name": "token",
-						"required": true,
-						"schema": {
-							"type": "string"
-						},
-						"example": "user-1"
-					},
+						"api_key": []
+					}
+				],
+				"parameters": [
 					{
 						"description": "Count is used to determine how many quantity will be send.\nIts default value is **5**.",
 						"in": "query",

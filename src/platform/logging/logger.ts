@@ -1,4 +1,4 @@
-export function log (message: any, level: 'debug'|'log'|'warn'|'error' = 'log') {
+export function log (level: 'debug'|'log'|'info'|'warn'|'error', ...message: any) {
   console[level](message)
 }
 

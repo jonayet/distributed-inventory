@@ -34,7 +34,7 @@ export async function getPrice (productId: string, lang: string): Promise<Produc
     await cache.set(productKey, data)
     return data
   } catch (err) {
-    log(err, 'error')
+    log('error', err)
     throw new Error('Unable to reach price service')
   } finally {
     if (lockRef) releaseLock(productKey, lockRef)
