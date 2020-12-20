@@ -4,6 +4,13 @@ import bodyParser from 'body-parser'
 import { RegisterRoutes } from './routes'
 import { errorHandler, notFoundHandler } from './middleware'
 import logger from '@platform/logging/logger'
+
+// ########################################################################
+// controllers need to be referenced in order to get crawled by the generator
+import './controllers/InventoryController'
+import './controllers/OrderController'
+// ########################################################################
+
 const cors = require('cors')
 
 export const app = express()

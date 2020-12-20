@@ -1,14 +1,7 @@
 import { Controller, Route, Get, Tags, Query, Security, Response } from 'tsoa'
-import { getInventory } from './inventory-service'
-import { AuthorizationError } from './authentication'
-
-type Client = 'web'|'mobile'
-type Lang = 'en-us'|'en-gb'|'de-de'|'es-es'
-
-interface ValidattionError {
-  message: 'Validation failed';
-  details: { [name: string]: unknown };
-}
+import { getInventory } from '../inventory-service'
+import { AuthorizationError } from '../authentication'
+import { Client, Lang, ValidattionError } from '../schema'
 
 @Route('/inventory')
 @Tags('InventoryController')
@@ -32,7 +25,6 @@ export class InventoryController extends Controller {
    * @param lang Lang parameter is used to select the currency for price.
    * This is an optional param, default value is **en-us**.
    */
-
   @Get()
   @Security('api_key')
   @Response<AuthorizationError>(401, 'Unauthorized')

@@ -1,7 +1,6 @@
 {
-  "entryFile": "src/index.ts",
+  "entryFile": "src/inventory/app.ts",
   "noImplicitAdditionalProperties": "throw-on-extras",
-  "controllerPathGlobs": ["src/inventory/**/*Controller.ts"],
   "spec": {
     "host": "localhost:8080",
     "schemes": ["http"],

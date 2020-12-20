@@ -47,6 +47,8 @@ See the architecture [here](docs/architecture.md)
 ## Interacting with the service
 First run the inventory service in [Development](#How-to-run-the-service-in-Development-mode?) or [Production](#How-to-run-the-service-in-Production-mode?) mode.
 
+Swagger document can be found here: https://jonayet.github.io/distributed-inventory
+
 Provide a authentication token in **access_token** parameter in the query.  
 Token parameter is a simple string which will be used to identify the user.  
 Example: user-1  

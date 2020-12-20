@@ -121,6 +121,23 @@
 					"de-de",
 					"es-es"
 				]
+			},
+			"OrderItem": {
+				"properties": {
+					"productId": {
+						"type": "string"
+					},
+					"quantity": {
+						"type": "integer",
+						"format": "int32"
+					}
+				},
+				"required": [
+					"productId",
+					"quantity"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {
@@ -231,6 +248,58 @@
 						}
 					}
 				]
+			}
+		},
+		"/order": {
+			"post": {
+				"operationId": "CreateOrder",
+				"responses": {
+					"204": {
+						"description": "No content"
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AuthorizationError"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"OrderController"
+				],
+				"security": [
+					{
+						"api_key": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "client parameter is used to identify the client. It can be **web** or **mobile**.\nThis is an optional parameter, **web** will be used by default.",
+						"in": "query",
+						"name": "client",
+						"required": false,
+						"schema": {
+							"$ref": "#/components/schemas/Client"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"items": {
+									"$ref": "#/components/schemas/OrderItem"
+								},
+								"type": "array"
+							}
+						}
+					}
+				}
 			}
 		}
 	},

@@ -11,15 +11,15 @@
   "main": "dist/index.ts",
   "types": "dist/index.d.ts",
   "scripts": {
-    "dev": "concurrently \"npm:dev:watch\" \"npm:tsoa:watch\" \"npm:start:swagger-ui\"",
+    "dev": "concurrently \"npm:app:watch\" \"npm:tsoa:watch\" \"npm:swagger-ui\"",
     "build": "tsoa spec-and-routes && tsc",
-    "start": "concurrently \"npm:start:app\" \"\"npm:start:swagger-ui\"\"",
-    "start:swagger-ui": "http-server -s -p 8081 docs",
-    "start:app": "node dist/index.js",
+    "start": "concurrently \"npm:app\" \"\"npm:swagger-ui\"\"",
     "test": "jest --testPathPattern='.*\\.spec\\.ts$'",
+    "app": "node dist/index.js",
     "lint": "eslint --ext .ts src/",
-    "dev:watch": "nodemon --watch src --ignore *.spec.ts --ignore *Controller.ts src/index.ts",
-    "tsoa:watch": "nodemon --watch src/inventory/*Controller.ts -x tsoa spec-and-routes"
+    "swagger-ui": "http-server -s -p 8081 docs",
+    "app:watch": "nodemon --watch src --ignore *.spec.ts --ignore controllers/*.ts src/index.ts",
+    "tsoa:watch": "nodemon --watch src/inventory/controllers -e ts --exec tsoa spec-and-routes"
   },
   "dependencies": {
     "axios": "^0.21.0",

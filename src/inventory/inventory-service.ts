@@ -1,25 +1,6 @@
+import { Inventory } from './schema'
 import { getInventory as getInventoryData } from './repositories/inventory'
 import { getPrice } from './repositories/price'
-
-interface Product {
-  productId: string,
-  /**
-   * @isInt
-   */
-  available: number,
-  /**
-   * @isInt
-   */
-  price: number
-}
-
-export interface Inventory {
-  inventory: Product[],
-  currency: string,
-  $pagination: {
-    remainingItems: number
-  }
-}
 
 const currencyMap: Record<string, string> = {
   'en-us': '$',
