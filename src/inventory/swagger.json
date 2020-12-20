@@ -60,6 +60,30 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"AuthorizationError": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					},
+					"stack": {
+						"type": "string"
+					},
+					"status": {
+						"type": "number",
+						"format": "double",
+						"default": 401
+					}
+				},
+				"required": [
+					"name",
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"ValidattionError": {
 				"properties": {
 					"message": {
@@ -135,22 +159,22 @@
 							}
 						}
 					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AuthorizationError"
+								}
+							}
+						}
+					},
 					"422": {
 						"description": "Validation Failed",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ValidattionError"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Internal server error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "string"
 								}
 							}
 						}

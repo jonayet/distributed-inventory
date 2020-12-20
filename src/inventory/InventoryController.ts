@@ -1,5 +1,6 @@
-import { Controller, Route, Get, Tags, Query, Security, Request, Response } from 'tsoa'
+import { Controller, Route, Get, Tags, Query, Security, Response } from 'tsoa'
 import { getInventory } from './inventory-service'
+import { AuthorizationError } from './authentication'
 
 type Client = 'web'|'mobile'
 type Lang = 'en-us'|'en-gb'|'de-de'|'es-es'
@@ -34,16 +35,14 @@ export class InventoryController extends Controller {
 
   @Get()
   @Security('api_key')
-  @Response<string>(500, 'Internal server error')
+  @Response<AuthorizationError>(401, 'Unauthorized')
   @Response<ValidattionError>(422, 'Validation Failed')
   public async get (
     @Query() count: number = 5,
     @Query() page: number = 0,
     @Query() client: Client = 'web',
-    @Query() lang: Lang = 'en-us',
-    @Request() request: any
+    @Query() lang: Lang = 'en-us'
   ) {
-    this.setStatus(201)
-    return getInventory(lang)
+    return getInventory(count, page, client, lang)
   }
 }

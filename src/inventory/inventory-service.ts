@@ -1,4 +1,4 @@
-import { getInventory as getInventoryTable } from '@platform/persistence/inventory-db'
+import { getInventory as getInventoryData } from './repositories/inventory'
 import { getPrice } from './repositories/price'
 
 interface Product {
@@ -28,9 +28,14 @@ const currencyMap: Record<string, string> = {
   'es-es': '€'
 }
 
-export async function getInventory (lang: string): Promise<Inventory> {
-  const products = await getInventoryTable()
-  const promises = products.map(async (p) => {
+export async function getInventory (count: number, page: number, client: string, lang: string): Promise<Inventory> {
+  const products = await getInventoryData()
+  const start = count * page
+  const end = start + count
+  const remaining = products.length - end
+  const produceSegment = products.slice(start, end)
+
+  const promises = produceSegment.map(async (p) => {
     const { price } = await getPrice(p.productId, lang)
     return {
       productId: p.productId,
@@ -43,7 +48,7 @@ export async function getInventory (lang: string): Promise<Inventory> {
     inventory: await Promise.all(promises),
     currency: currencyMap[lang],
     $pagination: {
-      remainingItems: 0
+      remainingItems: remaining < 0 ? 0 : remaining
     }
   }
 }
