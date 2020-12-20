@@ -1,19 +1,18 @@
 FROM node:14.15.2-alpine3.10 as builder
-
 WORKDIR /app
-COPY package.json .
+
+COPY ./package.json .
 RUN npm install --silent --progress=false
 
-COPY tsconfig.json .
+COPY tsconfig.json tsoa.json ./
 COPY ./src ./src
 RUN npm run build
-
-COPY ./docs ./docs
 
 FROM node:14.15.2-alpine3.10
 WORKDIR /app
 
-COPY --from=builder /app/node_modules node_modules
+COPY ./docs docs
 COPY --from=builder /app/dist dist
+COPY --from=builder /app/node_modules node_modules
 
-CMD ["node", "./dist/index.js"]
+CMD ["npm", "start"]

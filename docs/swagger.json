@@ -236,7 +236,7 @@
 	},
 	"servers": [
 		{
-			"url": "/"
+			"url": "http://localhost:8080/"
 		}
 	]
 }

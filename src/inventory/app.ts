@@ -1,19 +1,18 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 
-import swaggerSpecs from '../../docs/swagger.json'
 import { RegisterRoutes } from './routes'
 import { errorHandler, notFoundHandler } from './middleware'
 import logger from '@platform/logging/logger'
-const swaggerUi = require('swagger-ui-express')
+const cors = require('cors')
 
 export const app = express()
 const port = process.env.PORT || 8080
 
+app.use(cors())
 app.use(bodyParser.json())
 
 RegisterRoutes(app)
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs))
 
 app.use(notFoundHandler)
 app.use(errorHandler)

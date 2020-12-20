@@ -3,6 +3,8 @@
   "noImplicitAdditionalProperties": "throw-on-extras",
   "controllerPathGlobs": ["src/inventory/**/*Controller.ts"],
   "spec": {
+    "host": "localhost:8080",
+    "schemes": ["http"],
     "specVersion": 3,
     "outputDirectory": "docs",
     "securityDefinitions": {

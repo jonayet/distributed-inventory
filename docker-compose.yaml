@@ -1,12 +1,15 @@
 version: '3'
 services:
-  app:
+  inventory:
     build:
       context: .
       dockerfile: dockerfile
-    command: node ./dist/index.js
+    command: npm run start:app
     user: "node"
     environment:
       NODE_ENV: production
     ports:
       - "8080:8080"
+      - "8081:8081"
+  price:
+    image: adichallenge/adichallenge:product-engine

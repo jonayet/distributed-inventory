@@ -17,11 +17,11 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "@platform/*": ["./src/platform/*"],
-      "@inventory/*": ["./src/inventory/*"]
+      "@platform/*": ["src/platform/*"],
+      "@inventory/*": ["src/inventory/*"]
     },
 
     "experimentalDecorators": true
   },
-  "include": ["./src/**/*", "platform"]
+  "include": ["src"]
 }
