@@ -3,7 +3,7 @@ services:
   test:
     build:
       context: .
-      dockerfile: dockerfile.dev
+      dockerfile: Dockerfile.dev
     command: npm test
     user: "node"
     environment:

@@ -3,8 +3,8 @@ services:
   inventory:
     build:
       context: .
-      dockerfile: dockerfile
-    command: npm run start:app
+      dockerfile: Dockerfile
+    command: npm start
     user: "node"
     environment:
       NODE_ENV: production

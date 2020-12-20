@@ -16,7 +16,7 @@
     "start": "concurrently \"npm:start:app\" \"\"npm:start:swagger-ui\"\"",
     "start:swagger-ui": "http-server -s -p 8081 docs",
     "start:app": "node dist/index.js",
-    "test": "jest",
+    "test": "jest --testPathPattern='.*\\.spec\\.ts$'",
     "lint": "eslint --ext .ts src/",
     "dev:watch": "nodemon --watch src --ignore *.spec.ts --ignore *Controller.ts src/index.ts",
     "tsoa:watch": "nodemon --watch src/inventory/*Controller.ts -x tsoa spec-and-routes"

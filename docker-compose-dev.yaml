@@ -3,7 +3,7 @@ services:
   inventory:
     build:
       context: .
-      dockerfile: dockerfile.dev
+      dockerfile: Dockerfile.dev
     command: npm run dev
     user: "node"
     environment:
