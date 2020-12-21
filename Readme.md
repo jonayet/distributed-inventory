@@ -1,9 +1,9 @@
 # Distributed inventory service
 
-## View Live Swagger documentation: https://jonayet.github.io/distributed-inventory
+### View Live Swagger documentation: https://jonayet.github.io/distributed-inventory/
 <br/>
 
-## View the solution [Architecture](docs/Architecture.md)
+### View the solution [Architecture](docs/Architecture.md)
 <br/>
 
 ## How to run the service in Development mode?
@@ -34,10 +34,10 @@ npm install && npm run build && npm start
 ```
 <br/>
 
-## After running the inventory service, open http://localhost:8080/ to see the endpoints running.
+### After running the inventory service, open http://localhost:8080/ to see the endpoints running.
 <br/>
 
-## And browse http://localhost:8081/ to see the Swagger specs.
+### And browse http://localhost:8081/ to see the Swagger specs.
 <br/><br/>
 
 ## How to test the specs?

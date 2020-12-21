@@ -17,3 +17,9 @@ COPY --from=builder /app/dist dist
 COPY --from=builder /app/node_modules node_modules
 
 CMD ["npm", "start"]
+
+# app server
+EXPOSE 8080
+
+# for Swagger ui server
+EXPOSE 8081
